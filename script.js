@@ -17,10 +17,6 @@ var tempMat;
 
 var wireMat;
 
-function exportImage() {
-    BABYLON.Tools.CreateScreenshot(engine, camera, 400);
-}
-
 var ColorHost = function() {
     this.col0 = "#ffffff";
     this.col1 = "#0f6bff";
@@ -37,6 +33,9 @@ var ColorHost = function() {
     this.equalizeBgColor = function equalizeBgColor() {
         this.bg = this.col1;
     };
+    this.equalizeFontColor = function() {
+        this.bg = this.col0;
+    }
     this.equalizeDepths = function() {
         var median = 0;
         median += this.yDepth;
@@ -48,7 +47,7 @@ var ColorHost = function() {
         this.sDepth = median;
     }
     this.export = function() {
-        BABYLON.Tools.CreateScreenshot(engine, camera, 2048);
+        BABYLON.Tools.CreateScreenshotUsingRenderTarget(engine, camera, 2048)
     };
 
     this.fov = 0.1;
@@ -77,7 +76,9 @@ var ColorHost = function() {
     this.yDepth = 0.000000001;
     this.yHeight = 0;
     this.aDepth = 0.000000001;
+    this.aHeight = 0;
     this.sDepth = 0.000000001;
+    this.sHeight = 0;
 
 };
 var colorHost = new ColorHost();
@@ -97,6 +98,7 @@ window.onload = function() {
     gui.add(colorHost, "toggleGuideMeshes");
     gui.add(colorHost, "executeBoolean");
     gui.add(colorHost, "equalizeBgColor");
+    gui.add(colorHost, "equalizeFontColor");
     gui.add(this.colorHost, "equalizeDepths")
     gui.add(colorHost, "positiveBool");
 
@@ -106,7 +108,9 @@ window.onload = function() {
     gui.add(colorHost, "yDepth", 0.0000001, 1.0);
     gui.add(colorHost, "yHeight", 0, 1);
     gui.add(colorHost, "aDepth", 0.0000001, 1.0);
+    gui.add(colorHost, "aHeight", 0, 1);
     gui.add(colorHost, "sDepth", 0.0000001, 1.0);
+    gui.add(colorHost, "sHeight", 0, 1);
     gui.add(colorHost, "Depth", 0, 1);
 
     /* gui.add(colorHost, "yY"); */
@@ -315,12 +319,12 @@ function update() {
 
         a.scaling = scale;
         a.position.x = -0.475 + (colorHost.aDepth * 2 - 1) * .1;
-        a.position.y = 0
+        a.position.y = 0 - colorHost.aHeight * .1;
         a.position.z = colorHost.aZ;
 
         s.scaling = scale;
         s.position.x = colorHost.sX;
-        s.position.y = 0
+        s.position.y = 0 - colorHost.sHeight * .1
         s.position.z = -0.475 + (colorHost.sDepth * 2 - 1) * .1;
 
         bevel.position.y = 1.2 - colorHost.bevelDepth;
