@@ -21,23 +21,23 @@ var tempMat;
 var wireMat;
 
 var ColorHost = function() {
-    this.col0 = "#ffffff";
-    this.col1 = "#0f6bff";
+    this.Cube = "#ffffff";
+    this.Letters = "#0f6bff";
     this.bg = "#0f6bff";
 
-    this.executeBoolean = function executeBoolean() {
+    this.Refresh = function Refresh() {
         updateBoolean();
     };
 
-    this.Guides = function toggleGuideMeshes() {
+    /* this.Guides = function toggleGuideMeshes() {
         toggleMeshVisibility();
-    };
+    }; */
 
     this.equalizeBgColor = function equalizeBgColor() {
-        this.bg = this.col1;
+        this.bg = this.Letters;
     };
     this.equalizeFontColor = function() {
-        this.bg = this.col0;
+        this.bg = this.Cube;
     }
     this.equalizeDepths = function() {
         var median = 0;
@@ -49,14 +49,15 @@ var ColorHost = function() {
         this.aDepth = median;
         this.sDepth = median;
     }
-    this.export = function() {
-        BABYLON.Tools.CreateScreenshotUsingRenderTarget(engine, camera, 2048)
+    this.Export = function() {
+        disablePH();
+        BABYLON.Tools.CreateScreenshotUsingRenderTarget(engine, camera, 4096)
     };
 
     this.fov = 0.1;
     this.cameraDistance = 30;
 
-    this.positiveBool = false;
+    this.Positive = false;
 
     this.yScale = 1;
     this.yX = 0;
@@ -71,8 +72,8 @@ var ColorHost = function() {
     this.sY = 0;
     this.sZ = -0.5;
 
-    this.Depth = 1;
-    this.prevDepth = this.Depth;
+    this.Depth = 0;
+    this.prevDepth = 0;
 
     this.bevelDepth = 0;
 
@@ -83,6 +84,7 @@ var ColorHost = function() {
     this.sDepth = 0.000000001;
     this.sHeight = 0;
 
+    this.Guides = true;
 };
 var colorHost = new ColorHost();
 const PI = Math.PI;
@@ -92,28 +94,28 @@ var radiusWatcher;
 window.onload = function() {
 
     var gui = new dat.GUI();
-    gui.addColor(colorHost, "col0");
-    gui.addColor(colorHost, "col1");
-    gui.addColor(colorHost, "bg");
+    gui.add(colorHost, "Refresh");
+    gui.addColor(colorHost, "Cube");
+    gui.addColor(colorHost, "Letters");
+    /* gui.addColor(colorHost, "bg"); */
     /* gui.add(colorHost, "fov").step(0.01).min(0.01).max(3); */
     /* radiusWatcher = gui.add(colorHost, "cameraDistance").min(0.1).max(30); */
 
     gui.add(colorHost, "Guides");
-    gui.add(colorHost, "executeBoolean");
-    gui.add(colorHost, "equalizeBgColor");
-    gui.add(colorHost, "equalizeFontColor");
-    gui.add(this.colorHost, "equalizeDepths")
-    gui.add(colorHost, "positiveBool");
+    /* gui.add(colorHost, "equalizeBgColor");
+    gui.add(colorHost, "equalizeFontColor"); */
+    /* gui.add(this.colorHost, "equalizeDepths") */
+    gui.add(colorHost, "Positive");
 
 
     /* gui.add(colorHost, "yScale", .2, 1.5); */
     /* gui.add(colorHost, "yX"); */
-    gui.add(colorHost, "yDepth", 0.0000001, 1.0);
+    /*  gui.add(colorHost, "yDepth", 0.0000001, 1.0);
     gui.add(colorHost, "yHeight", 0, 1);
     gui.add(colorHost, "aDepth", 0.0000001, 1.0);
     gui.add(colorHost, "aHeight", 0, 1);
     gui.add(colorHost, "sDepth", 0.0000001, 1.0);
-    gui.add(colorHost, "sHeight", 0, 1);
+    gui.add(colorHost, "sHeight", 0, 1); */
     gui.add(colorHost, "Depth", 0, 1);
 
     /* gui.add(colorHost, "yY"); */
@@ -127,7 +129,7 @@ window.onload = function() {
     /* gui.add(colorHost, "sY"); */
     /* gui.add(colorHost, "sZ"); */
     /* gui.add(colorHost, "bevelDepth", 0, .3); */
-    gui.add(this.colorHost, "export")
+    gui.add(this.colorHost, "Export");
 
     /* radiusWatcher.onChange(function(v) {
         camera.radius = colorHost.cameraDistance;
@@ -162,7 +164,7 @@ window.addEventListener("DOMContentLoaded", function() {
     BABYLON.SceneLoader.ImportMesh(
         "",
         "./",
-        "yas_letters_export.babylon",
+        "yas_letters_Export.babylon",
         scene,
         function(newMeshes) {
             meshes = newMeshes;
@@ -171,15 +173,20 @@ window.addEventListener("DOMContentLoaded", function() {
             y.rotation.x = PI / 2;
             y.rotation.y = PI / 2;
             y.material = multiMaterial;
+            y.visibility = 0;
 
             a = newMeshes[0];
             a.position.x = -0.5;
             a.rotation.y = PI / 2;
             a.material = y.material;
+            a.visibility = 0;
 
             s = newMeshes[2];
             s.position.z = -0.5;
             s.material = y.material;
+            s.visibility = 0;
+
+            cube.visibility = 0;
 
             /* s.posiition. */
             /* s.rotation.y = ; */
@@ -199,7 +206,7 @@ window.addEventListener("DOMContentLoaded", function() {
     BABYLON.SceneLoader.ImportMesh(
         "",
         "./",
-        "yas_letters_export_2.babylon",
+        "yas_letters_Export_2.babylon",
         scene,
         function(newMeshes) {
             meshes = newMeshes;
@@ -218,12 +225,12 @@ window.addEventListener("DOMContentLoaded", function() {
             sPH.position.z = -0.5;
             sPH.material = PHmat;
 
-            yPH.visibility = 0;
-            aPH.visibility = 0;
-            sPH.visibility = 0;
+            /*  yPH.visibility = 0;
+             aPH.visibility = 0;
+             sPH.visibility = 0; */
 
             cubePH = newMeshes[3];
-            cubePH.visibility = 0;
+            /* cubePH.visibility = 0; */
 
             /* s.posiition. */
             /* s.rotation.y = ; */
@@ -238,6 +245,7 @@ window.addEventListener("DOMContentLoaded", function() {
              a.material = wireMat;
              s.material = wireMat; */
             /* sCSG = BABYLON.CSG.FromMesh(meshes[1]); */
+            updateBoolean();
         }
     );
 
@@ -341,6 +349,7 @@ window.addEventListener("DOMContentLoaded", function() {
     });
 });
 
+
 function update() {
     var heightPercent = (engine.getRenderHeight() * 100) / 1920;
 
@@ -350,12 +359,14 @@ function update() {
     /* console.log(color); */
     document.getElementById("renderCanvas").style.borderColor = color;
 
+    colorHost.bg = colorHost.Letters;
+
     try {
 
         if (colorHost.prevDepth != colorHost.Depth) {
-            colorHost.yDepth = colorHost.Depth;
-            colorHost.aDepth = colorHost.Depth;
-            colorHost.sDepth = colorHost.Depth;
+            colorHost.yDepth = colorHost.Depth * .7;
+            colorHost.aDepth = colorHost.Depth * .7;
+            colorHost.sDepth = colorHost.Depth * .7;
         }
 
         scale = new BABYLON.Vector3(.94, .94, .94);
@@ -406,14 +417,20 @@ function update() {
         cubeCSG.rotation = cube.rotation;
 
         multiMaterial.subMaterials[0].emissiveColor = BABYLON.Color3.FromHexString(
-            colorHost.col0
+            colorHost.Cube
         );
         multiMaterial.subMaterials[1].emissiveColor = BABYLON.Color3.FromHexString(
-            colorHost.col1
+            colorHost.Letters
         );
         scene.clearColor = BABYLON.Color3.FromHexString(colorHost.bg);
 
         colorHost.prevDepth = colorHost.Depth;
+
+        if (colorHost.Guides) {
+            activatePH();
+        } else {
+            disablePH();
+        }
     } catch (e) {
         console.log(e);
     }
@@ -447,59 +464,66 @@ function updateBoolean() {
     aCSG = BABYLON.CSG.FromMesh(a);
     sCSG = BABYLON.CSG.FromMesh(s);
 
-    if (colorHost.positiveBool) {
+    if (colorHost.Positive) {
         cubeCSG = cubeCSG.union(yCSG);
         cubeCSG = cubeCSG.union(aCSG);
         cubeCSG = cubeCSG.union(sCSG);
 
 
     } else {
-        bevel.material = mat0;
-        const bevelCSG = BABYLON.CSG.FromMesh(bevel);
+        /* bevel.material = mat0;
+        const bevelCSG = BABYLON.CSG.FromMesh(bevel); */
         cubeCSG = cubeCSG.subtract(yCSG);
         cubeCSG = cubeCSG.subtract(aCSG);
         cubeCSG = cubeCSG.subtract(sCSG);
-        cubeCSG = cubeCSG.subtract(bevelCSG);
+        /* cubeCSG = cubeCSG.subtract(bevelCSG); */
     }
     newMesh = cubeCSG.toMesh("newcube", multiMaterial, scene, true);
     newMesh.material = tempMat;
     console.log("bool done");
 
-    if (a.visibility == 1) {
+    if (cube.visibility == 1) {
         toggleMeshVisibility();
     }
+    disablePH();
 
     bevel.material = wireMat;
+}
+
+function activatePH() {
+    yPH.visibility = 1;
+    aPH.visibility = 1;
+    sPH.visibility = 1;
+
+    cubePH.visibility = 1;
+}
+
+function disablePH() {
+    yPH.visibility = 0;
+    aPH.visibility = 0;
+    sPH.visibility = 0;
+
+    cubePH.visibility = 0;
 }
 
 
 
 function toggleMeshVisibility() {
-    if (a.visibility == 1) {
-        y.visibility = 0;
+    if (cubePH.visibility == 0) {
+        /* y.visibility = 0;
         a.visibility = 0;
-        s.visibility = 0;
-
-        yPH.visibility = 1;
-        aPH.visibility = 1;
-        sPH.visibility = 1;
-
-        cubePH.visibility = 1;
+        s.visibility = 0; */
+        activatePH();
 
         cube.visibility = 0;
         bevel.visibility = 0;
     } else {
-        y.visibility = 1;
-        a.visibility = 1;
-        s.visibility = 1;
+        /*  y.visibility = 1;
+         a.visibility = 1;
+         s.visibility = 1; */
+        disablePH();
 
-        yPH.visibility = 0;
-        aPH.visibility = 0;
-        sPH.visibility = 0;
-
-        cubePH.visibility = 0;
-
-        cube.visibility = 1;
+        /* cube.visibility = 1; */
         bevel.visibility = 0;
     }
 }

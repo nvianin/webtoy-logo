@@ -1,0 +1,56 @@
+Exporter version: 6.3.1, Blender version: 2.82 (sub 7)
+========= Conversion from Blender to Babylon.js =========
+	Scene settings used :
+		Inline textures     :  false
+		Material Type       :  PBR
+		Positions Precision :  4
+		Normals Precision   :  3
+		UVs Precision       :  3
+		Vert Color Precision:  3
+		Mat Weight Precision:  2
+		Keep Z-up r-handed  :  no
+		Texture directory   :  C:\Users\kavou\Desktop\écal\ecal_dynamicID\webtoy_logo\
+	Python World class constructor completed
+	WARNING: No active camera has been assigned, or is not in a currently selected Blender layer
+	processing begun of mesh:  Text.054
+		processing begun of material:  font_2
+		processing begun of material:  font
+		processing begun of multimaterial:  yas_letters_export.Multimaterial#0
+		num positions      :  118
+		num normals        :  118
+		num tangents       :  0
+		num uvs            :  236
+		num uvs2           :  0
+		num colors         :  0
+		num indices        :  144
+	processing begun of mesh:  Text.055
+		processing begun of material:  font_2
+		processing begun of material:  font
+		registered as also a user of material:  font
+		processing begun of multimaterial:  yas_letters_export.Multimaterial#1
+		num positions      :  72
+		num normals        :  72
+		num tangents       :  0
+		num uvs            :  144
+		num uvs2           :  0
+		num colors         :  0
+		num indices        :  96
+	processing begun of mesh:  Text.056
+		processing begun of material:  font_2
+		processing begun of material:  font
+		registered as also a user of material:  font
+		processing begun of multimaterial:  yas_letters_export.Multimaterial#2
+		num positions      :  30394
+		num normals        :  30394
+		num tangents       :  0
+		num uvs            :  60788
+		num uvs2           :  0
+		num colors         :  0
+		num indices        :  153924
+========= Writing of JSON file started =========
+	writing mesh:  Text.054
+	writing mesh:  Text.055
+	writing mesh:  Text.056
+========= Writing of JSON file completed =========
+========= end of processing =========
+elapsed time:  0 min, 3.0152 secs
