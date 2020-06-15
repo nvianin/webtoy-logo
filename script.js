@@ -1,5 +1,6 @@
 var y, a, s;
 var yCSG, aCSG, sCSG;
+var yPH, aPH, sPH;
 var cube;
 var cubeCSG;
 var finalMesh;
@@ -12,6 +13,8 @@ var invisibleMaterial;
 
 var multiMaterial;
 var mat0, mat1;
+
+var PHmat;
 
 var tempMat;
 
@@ -26,7 +29,7 @@ var ColorHost = function() {
         updateBoolean();
     };
 
-    this.toggleGuideMeshes = function toggleGuideMeshes() {
+    this.Guides = function toggleGuideMeshes() {
         toggleMeshVisibility();
     };
 
@@ -95,7 +98,7 @@ window.onload = function() {
     /* gui.add(colorHost, "fov").step(0.01).min(0.01).max(3); */
     /* radiusWatcher = gui.add(colorHost, "cameraDistance").min(0.1).max(30); */
 
-    gui.add(colorHost, "toggleGuideMeshes");
+    gui.add(colorHost, "Guides");
     gui.add(colorHost, "executeBoolean");
     gui.add(colorHost, "equalizeBgColor");
     gui.add(colorHost, "equalizeFontColor");
@@ -187,9 +190,53 @@ window.addEventListener("DOMContentLoaded", function() {
             aCSG = BABYLON.CSG.FromMesh(a);
             sCSG = BABYLON.CSG.FromMesh(s);
 
-            y.material = wireMat;
+            /* y.material = wireMat;
             a.material = wireMat;
-            s.material = wireMat;
+            s.material = wireMat; */
+            /* sCSG = BABYLON.CSG.FromMesh(meshes[1]); */
+        }
+    );
+    BABYLON.SceneLoader.ImportMesh(
+        "",
+        "./",
+        "yas_letters_export_2.babylon",
+        scene,
+        function(newMeshes) {
+            meshes = newMeshes;
+            yPH = newMeshes[1];
+            yPH.position.y = 0.5;
+            yPH.rotation.x = PI / 2;
+            yPH.rotation.y = PI / 2;
+            yPH.material = PHmat;
+
+            aPH = newMeshes[0];
+            aPH.position.x = -0.5;
+            aPH.rotation.y = PI / 2;
+            aPH.material = PHmat;
+
+            sPH = newMeshes[2];
+            sPH.position.z = -0.5;
+            sPH.material = PHmat;
+
+            yPH.visibility = 0;
+            aPH.visibility = 0;
+            sPH.visibility = 0;
+
+            cubePH = newMeshes[3];
+            cubePH.visibility = 0;
+
+            /* s.posiition. */
+            /* s.rotation.y = ; */
+            /* cube.material = a.material; */
+            /*  tempMat = a.material;
+             cube.material = tempMat;
+             yCSG = BABYLON.CSG.FromMesh(y);
+             aCSG = BABYLON.CSG.FromMesh(a);
+             sCSG = BABYLON.CSG.FromMesh(s);
+
+             y.material = wireMat;
+             a.material = wireMat;
+             s.material = wireMat; */
             /* sCSG = BABYLON.CSG.FromMesh(meshes[1]); */
         }
     );
@@ -201,8 +248,6 @@ window.addEventListener("DOMContentLoaded", function() {
             new BABYLON.Vector3(0, 1, 0),
             scene
         );
-
-
 
         invisibleMaterial = new BABYLON.StandardMaterial("invisible", scene);
         invisibleMaterial.alpha = 0;
@@ -235,6 +280,8 @@ window.addEventListener("DOMContentLoaded", function() {
 
         wireMat = new BABYLON.StandardMaterial("wireMat", scene);
         wireMat.wireframe = true;
+
+        PHmat = new BABYLON.StandardMaterial("PHmat", scene);
 
         bevel = BABYLON.MeshBuilder.CreateBox("cube", {});
         bevel.material = wireMat;
@@ -317,15 +364,30 @@ function update() {
         y.position.y = 0.475 - (colorHost.yDepth * 2 - 1) * .1;
         y.position.z = 0;
 
+        yPH.scaling = scale;
+        yPH.position.x = -0.1 + colorHost.yHeight * .1;
+        yPH.position.y = 0.475 - (colorHost.yDepth * 2 - 1) * .1;
+        yPH.position.z = 0;
+
         a.scaling = scale;
         a.position.x = -0.475 + (colorHost.aDepth * 2 - 1) * .1;
         a.position.y = 0 - colorHost.aHeight * .1;
         a.position.z = colorHost.aZ;
 
+        aPH.scaling = scale;
+        aPH.position.x = -0.475 + (colorHost.aDepth * 2 - 1) * .1;
+        aPH.position.y = 0 - colorHost.aHeight * .1;
+        aPH.position.z = colorHost.aZ;
+
         s.scaling = scale;
         s.position.x = colorHost.sX;
         s.position.y = 0 - colorHost.sHeight * .1
         s.position.z = -0.475 + (colorHost.sDepth * 2 - 1) * .1;
+
+        sPH.scaling = scale;
+        sPH.position.x = colorHost.sX;
+        sPH.position.y = 0 - colorHost.sHeight * .1
+        sPH.position.z = -0.475 + (colorHost.sDepth * 2 - 1) * .1;
 
         bevel.position.y = 1.2 - colorHost.bevelDepth;
 
@@ -417,13 +479,27 @@ function toggleMeshVisibility() {
         y.visibility = 0;
         a.visibility = 0;
         s.visibility = 0;
+
+        yPH.visibility = 1;
+        aPH.visibility = 1;
+        sPH.visibility = 1;
+
+        cubePH.visibility = 1;
+
         cube.visibility = 0;
         bevel.visibility = 0;
     } else {
         y.visibility = 1;
         a.visibility = 1;
         s.visibility = 1;
-        cube.visibility = 0;
+
+        yPH.visibility = 0;
+        aPH.visibility = 0;
+        sPH.visibility = 0;
+
+        cubePH.visibility = 0;
+
+        cube.visibility = 1;
         bevel.visibility = 0;
     }
 }
