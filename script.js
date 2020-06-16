@@ -201,6 +201,7 @@ window.addEventListener("DOMContentLoaded", function() {
             a.material = wireMat;
             s.material = wireMat; */
             /* sCSG = BABYLON.CSG.FromMesh(meshes[1]); */
+
         }
     );
     BABYLON.SceneLoader.ImportMesh(
@@ -246,6 +247,7 @@ window.addEventListener("DOMContentLoaded", function() {
              s.material = wireMat; */
             /* sCSG = BABYLON.CSG.FromMesh(meshes[1]); */
             updateBoolean();
+
         }
     );
 
@@ -328,6 +330,7 @@ window.addEventListener("DOMContentLoaded", function() {
     };
 
     scene = createScene();
+
     //scene.debugLayer.show();
     scene.onPointerDown = function castRay() {
         /* var ray = scene.createPickingRay(scene.pointerX, scene.pointerY, BABYLON.Matrix.Identity(), camera);
@@ -509,6 +512,7 @@ function disablePH() {
 
 
 function toggleMeshVisibility() {
+
     if (cubePH.visibility == 0) {
         /* y.visibility = 0;
         a.visibility = 0;
